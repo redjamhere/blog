@@ -1,16 +1,28 @@
 import * as React from 'react';
-import { useState, useEffect } from 'react';
 import { render } from 'react-dom';
-import { TestResponse } from 'src/common/TestResponse';
+import { BrowserRouter as Router, Link, Switch, Route } from 'react-router-dom';
+import ArticleList from './ArticleList';
+import Article from './Article';
 
 const App = () => {
-    const [text, setText] = useState('');
-    useEffect(() => {
-        fetch('/api/hello')
-            .then<TestResponse>(res => res.json())
-            .then(res => setText(res.text));
-    }, [])
-    return <h1>{text}</h1>;
+    return (
+        <Router>
+            <h2><a href="/">Главная</a></h2>
+            <nav>
+                <li><Link to="/article">Статьи</Link></li>
+            </nav>
+
+                <Switch>
+                    <Route path="/article/:name">
+                        <Article/>
+                    </Route>   
+                    <Route path="/article">
+                        <ArticleList/>
+                    </Route>                
+                </Switch>
+
+        </Router>
+    );
 }
 
 render(<App/>, document.getElementById("app"));
